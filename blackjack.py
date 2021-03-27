@@ -13,10 +13,12 @@ max_cards = 11      # the max number of cards in a hand
 
 # Functions
 
-########################################
+###########################################################################
+
 #
 # Function     : print_card
 # Description  : print the card from the integer value
+#              : took from 311 code
 #
 # Inputs       : card - the card to print
 # Outputs      : none
@@ -30,10 +32,34 @@ def print_card(card):
     cardty = card % 13
 
     if (cardty == 8):
-        print(f"10{card_suits[suit]}")
+        print(f"10{card_suits[suit]}", end= "")  # the end="" arg will make sure we dont print on a new line
     else:
-        print(f"{card_faces[cardty]}{card_suits[suit]}")
+        print(f"{card_faces[cardty]}{card_suits[suit]}", end= "") # the end="" arg will make sure we dont print on a new line
+
+###########################################################################
+#
+# Function     : print_cards
+# Description  : print a number of cards (no more than 13 on one line)
+#
+# Inputs       : cards - the array of cards to print
+#                num_cards - the number of cards to print
+# Outputs      : none
+def print_cards(cards, num_cards):
+    line_counter = 0
+    
+    for card_counter in range(num_cards):
+        if line_counter == 13:
+            print("\n", end= "")  # dont need in this since python will print on anew line???
+            print_card(cards[card_counter])
+            print(" ", end= "")
+            line_counter = 0
+        else:
+            print_card(cards[card_counter])
+            print(" ", end= "")  # the end="" arg will make sure we dont print on a new line
+            line_counter += 1
 
 
-
-
+test_cards = []
+for i in range(52):
+    test_cards.append(i)
+print_cards(test_cards, len(test_cards))
