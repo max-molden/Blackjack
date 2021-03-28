@@ -48,18 +48,13 @@ def print_cards(cards, num_cards):
     line_counter = 0
     
     for card_counter in range(num_cards):
-        if line_counter == 13:
-            print("\n", end= "")  # dont need in this since python will print on anew line???
+        if line_counter == 12:
+            # print("\n", end= "")  # dont need in this since python will print on a new line???
             print_card(cards[card_counter])
-            print(" ", end= "")
+            # print(" ", end= "")
+            print(" ")
             line_counter = 0
         else:
             print_card(cards[card_counter])
             print(" ", end= "")  # the end="" arg will make sure we dont print on a new line
             line_counter += 1
-
-
-test_cards = []
-for i in range(52):
-    test_cards.append(i)
-print_cards(test_cards, len(test_cards))
