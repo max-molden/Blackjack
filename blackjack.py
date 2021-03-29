@@ -87,7 +87,7 @@ def shuffle_cards(cards, num_cards):
     strike_idx = 0 # counter to keep track of the index at which to swap (instead of strikes as in "old" implementation)
 
     # 4) repeat step 2 until all numbers have been struck (for loop)
-    while strike_idx <= num_cards:
+    while strike_idx <= num_cards - 1:
         # 2) let k be a random card in the deck between [0, num cards remaining in deck-1]
         k = rand.randint(0, strike_idx)
 
@@ -105,3 +105,11 @@ def shuffle_cards(cards, num_cards):
 
 ###########################################################################
 # Debugging and testing stuff, will be removed later
+
+test_cards = []
+for i in range(52):
+    test_cards.append(i)
+
+print(f"deck before shuffle:\n\t{test_cards}")
+shuffle_cards(test_cards, len(test_cards))
+print(f"deck after shuffle:\n\t{test_cards}")
