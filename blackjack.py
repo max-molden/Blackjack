@@ -17,6 +17,18 @@ NUM_CARDS = 52      # the number of cards in a deck
 MAX_CARDS = 11      # the max number of cards in a hand
 
 ###########################################################################
+# Notes
+
+'''
+Passing by reference:
+    - weird in python
+        * doesnt really work like other languages
+    - for arrays
+        * it will work if I have a global (e.g. test_cards that is a full deck from 0 to 51) and I try to use, for example, shuffle_cards
+            -* however, I have to make sure that I do not rename the argument in the function, if I modify its indices or use a .method() -- see shuffle cards, it will work
+'''
+
+###########################################################################
 # Functions
 
 '''
@@ -81,7 +93,6 @@ Inputs          : cards - the array of cards to print
 
 Outputs         : none
 '''
-
 def shuffle_cards(cards, num_cards):
     # 1) write out numbers 1 to N, in this case they are written as 0 to 51, contained in arg cards
     strike_idx = 0 # counter to keep track of the index at which to swap (instead of strikes as in "old" implementation)
@@ -103,6 +114,73 @@ def shuffle_cards(cards, num_cards):
 
     # 5) the sequence obtained by performing swaps is one of the permuations for this set of cards, e.g. a shuffled deck
 
+'''
+ Function       : hand_value
+ Description    : return the value of the hand
+
+ Inputs         : cards - the array of cards in the hand
+                  num_cards - the number of cards in the hand
+
+ Outputs        : value of the cards in the given hand - counts aces at the end
+
+ Notes          : it is important to count aces at the end since they can count as either 1 or 11, the way this is done is very clear in the code, its quite simple
+ '''
+
+def hand_value(cards, num_cards):
+    hand_sum = 0    # cumualtive sum for value of the hand
+    ace_count = 0   # counter for number of aces, to be added at the end
+
+    for i in range(num_cards): # for each card in the deck cards[] do:
+        if cards[i] % 13 == 8: # if the card is a card 2-10 (use % 13 due to suit offset of 13) it is worth face value
+            hand_sum += (cards[i] % 13) + 2 # need to add to cumulaitve sum, but need to add 2 more than the value at the index as a 2 is worth 2 points but represented by a 0 --> 0 + 2 = 2 points
+        elif (cards[i] % 13 == 9) or (cards[i] % 13 == 10) or (cards[i] % 13 == 11): # if the card is a Jack, Queen, or King (represented by 9,10,11) (% 13 for suit offset)
+            hand_sum += 10 # these cards are each worth 10
+        else:
+            ace_count += 1 # if the card is anyting else (only Aces are left) increase the ace count and add the ace value later
+
+    for j in range(ace_count): # for each ace in the hand/deck do:  
+        if hand_sum + 11 > 21: # if making the ace worth 11 would cause a "bust", make the ace a 1 and add to total sum
+            hand_sum += 1
+        else:
+            hand_sum += 11  # otherwise make the ace worth 11 and add to the total sum
+
+    return hand_sum
+
+'''
+Function        : sort_cards
+
+Description     : sort a collection of cards using the bubble sort algorithm
+
+Inputs          : hand - the cards to sort
+                  num_cards - the number of cards in the hand
+
+Outputs         : none
+'''
+def sort_cards(hand, num_cards):
+    # bubble sort algo: perform a series of swaps
+        # start with first element of array, compare current to next, if current is larger than next, swap the elements
+        # otherwise skip to the next set of elements (current + 1 and current + 2) and increse the pointer
+        # this will take several passes as it takes the largest unsorted element up to the index before the smallest sorted element (towards the end)
+        # this must be repeated two ways (two for loops)
+    
+    # the outer loop controls the passes to sort - once the first pass is complete and the larges element is moved to the end of the array (and elements that need to go the front move up one spot)
+    # another pass will need to complete and bring the next largest unsorted element to the spot right before the larges sorted element at the end
+    for _ in range(num_cards - 1):
+        for pointer in range(num_cards - 1):    #  the inner loop does the comparison for each set of 2 elements (first and second, second and third, thrid and fourth, etc.)
+            if hand[pointer] % 13 > hand[pointer + 1] % 13:  # does comparisons if the value % 13 (suit offset) creates a swap condition (see above)
+                temp = hand[pointer]
+                hand[pointer] = hand[pointer + 1]
+                hand[pointer + 1] = temp
+            elif hand[pointer] % 13 == hand[pointer + 1] % 13: # if the values%13 are equal (i.e. 2HEARTS and 2CLUBS) then they need to still be put in suit order
+                if hand[pointer] > hand[pointer + 1]: # in this case use the actual value not the % 13 as those are already in suit order
+                    temp = hand[pointer]
+                    hand[pointer] = hand[pointer + 1]
+                    hand[pointer + 1] = temp
+                else: # increments pointer if comparision doesn't need to be made
+                    pointer += 1 
+            else: # increments pointer if comparison doesn't need to be made
+                pointer += 1
+
 ###########################################################################
 # Debugging and testing stuff, will be removed later
 
@@ -110,6 +188,11 @@ test_cards = []
 for i in range(52):
     test_cards.append(i)
 
-print(f"deck before shuffle:\n\t{test_cards}")
+print(f"ARRAY - deck before shuffle:\n\t{test_cards}\n")
+print(f"\tVISUAL - \n{print_cards(test_cards, len(test_cards))}")
 shuffle_cards(test_cards, len(test_cards))
-print(f"deck after shuffle:\n\t{test_cards}")
+print(f"ARRAY - deck after shuffle:\n\t{test_cards}\n")
+print(f"\tVISUAL - \n{print_cards(test_cards, len(test_cards))}")
+sort_cards(test_cards, len(test_cards))
+print(f"ARRAY - deck after re-sorting:\n\t{test_cards}")
+print(f"\tVISUAL - \n{print_cards(test_cards, len(test_cards))}")
