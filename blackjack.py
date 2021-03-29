@@ -26,6 +26,18 @@ Passing by reference:
     - for arrays
         * it will work if I have a global (e.g. test_cards that is a full deck from 0 to 51) and I try to use, for example, shuffle_cards
             -* however, I have to make sure that I do not rename the argument in the function, if I modify its indices or use a .method() -- see shuffle cards, it will work
+
+Printing a whole deck:
+    - works normal for original deck
+    - but if i sort the deck using my sort_cards function it looks weird since the 10s mess it up
+        * consider changing it later to add a space if not printing a 10
+
+Classes:
+    - consider making classes for things
+        * person?
+            -* dealer and player (rename class)
+        * cards/deck/hand (rename)
+            -* deck, hand etc.
 '''
 
 ###########################################################################
@@ -180,6 +192,74 @@ def sort_cards(hand, num_cards):
                     pointer += 1 
             else: # increments pointer if comparison doesn't need to be made
                 pointer += 1
+
+'''
+Function        : dealer_play
+Description     : dealer decision to hit or stand (hit on anything less than 17)
+
+Inputs          : hand - cards dealer has
+                  num_cards, the number of cards in dealer hand
+
+Outputs         : 0 = stand, 1 = hit
+
+Notes           : not really sure if I am going to need this but most likely
+'''
+def dealer_play(hand, num_cards):
+    dealer_value = hand_value(hand, num_cards)
+
+    if dealer_value <= 16: # if the dealer's cards total to 16 or less they have to hit per the rules of the game
+        return 1
+    else:  # otherwise they have to stand per the rules of the game
+        return 0
+
+'''
+Function        : player_play
+
+Description     : player decision to hit or stand
+
+Inputs          : hand - cards player has
+                  num_cards - the number of cards in player hand
+                  dealer_card - the dealers face up card
+
+Outputs         : 0 = stand, 1 = hit
+
+Notes           : most likely WILL NOT need this in the final product, but could be good for the beginning/testing
+'''
+def player_play(hand, num_cards, dealer_card):
+    # use this function to create a blackjack strategy for the player to decide if they should hit or stand for each time they are asked
+    # Strategy is as follows:
+        # if the player's hand totals to 11 or less they will hit every time
+        # if the player's hand totals to higher than 17 (assuming they haven't bust and can still play) they will stand every time
+        # if the player's hand totals to higher than 11 and less than or equal to 17, they hit when the assumed dealer's value is higher than their own and stand otherwise
+    # Assumed dealer's value (int assumed_dealer) is a helpful tool to use in this black jack strategy.  A good rule of thumb is to assume that the dealer's face down card is
+    # a face card. This helps the player assess the situation and make a good choice. For this reason, the player will assume that the dealer's hand evaluates to whatever card
+    # they have plus 10.
+
+    player_value = hand_value(hand, num_cards)
+    assumed_dealer = (dealer_card % 13) + 2 + 10 #  see above def.; use mod 13 to get value from 0 to 12 (how deck is represented), + 2 since 0 represents 2 card etc., + 10 assumed face card
+
+    if player_value <= 11: # if player value is 11 or less, always hit
+        return 1
+    elif player_value <= 17: # if player value is in the range (11, 17] choice depends on assumed dealer value
+        if assumed_dealer > player_value: # if dealer value is higher than player value, hit
+            return 1
+        else: # if dealer value is lower than or equal to player, stand
+            return 0
+    else: # if player value is greater than 17, stand
+        return 0
+
+###########################################################################
+###########################################################################
+'''
+This is probably th end of the functions I want to copy from 311 assignment
+I dont think I want play_hand
+I do think it could be good to look at it though, along with main
+
+I need to figureo out my gameplan from here forward
+'''
+###########################################################################
+###########################################################################
+
 
 ###########################################################################
 # Debugging and testing stuff, will be removed later
