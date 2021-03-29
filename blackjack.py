@@ -268,11 +268,20 @@ test_cards = []
 for i in range(52):
     test_cards.append(i)
 
-print(f"ARRAY - deck before shuffle:\n\t{test_cards}\n")
-print(f"\tVISUAL - \n{print_cards(test_cards, len(test_cards))}")
+print(f"ARRAY - deck before shuffle:\n{test_cards}\n")
+print("VISUAL:")
+print_cards(test_cards, len(test_cards))
+
+print("-"*100)
+
 shuffle_cards(test_cards, len(test_cards))
-print(f"ARRAY - deck after shuffle:\n\t{test_cards}\n")
-print(f"\tVISUAL - \n{print_cards(test_cards, len(test_cards))}")
+print(f"\nARRAY - deck after shuffle:\n{test_cards}\n")
+print("VISUAL:")
+print_cards(test_cards, len(test_cards))
+
+print("-"*100)
+
 sort_cards(test_cards, len(test_cards))
-print(f"ARRAY - deck after re-sorting:\n\t{test_cards}")
-print(f"\tVISUAL - \n{print_cards(test_cards, len(test_cards))}")
+print(f"\nARRAY - deck after re-sorting:\n{test_cards}\n")
+print("VISUAL:")
+print_cards(test_cards, len(test_cards))
