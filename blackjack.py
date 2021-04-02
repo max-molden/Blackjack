@@ -1,6 +1,7 @@
 ###########################################################################
 # imports
 import random as rand
+from abc import ABC, abstractmethod
 
 # Global vars, constants and symbols
 spade_blk = "\u2660"     # a unicode char to represent a black spade 
@@ -260,28 +261,72 @@ I need to figureo out my gameplan from here forward
 ###########################################################################
 ###########################################################################
 
+class Entity(ABC):
+    def __init__(self, type, name, hand):
+        self.type = type
+        self.name = name
+        self.hand = hand
+        self.num_cards = len(hand)
+
+    def introduce(self):
+        if self.type.lower() == "player" or self.type.lower() == "p":
+            print(f"Hello, I am a player in this game; my name is {self.name}")
+        elif self.type.lower() == "dealer" or self.type.lower() == "d":
+            print(f"Hi, I am the dealer for this game; my name is {self.name}")
+        else:
+            print(f"Strange, I am not sure what I am, but my name is {self.name}. You better check your code!")
+
+    # do I wnat str or repr?
+    # abstract method: each subclass will want to print potentially different info
+    @abstractmethod
+    def __repr__(self):
+        pass
+
+class Dealer(Entity):
+    # self.hand_length = 2
+    
+    def __repr__(self):
+        return f"type: {self.type}\nname: {self.name}\nhand: {print_cards(self.hand, self.num_cards)}"
+        
+class Player(Entity):
+    # self.hand_length = MAX_CARDS
+    
+
+    def __repr__(self):
+        return f"type: {self.type}\nname: {self.name}\nhand: {print_cards(self.hand, self.num_cards)}"
+
+
+
+
 
 ###########################################################################
 # Debugging and testing stuff, will be removed later
 
-test_cards = []
-for i in range(52):
-    test_cards.append(i)
+# test_cards = []
+# for i in range(52):
+#     test_cards.append(i)
 
-print(f"ARRAY - deck before shuffle:\n{test_cards}\n")
-print("VISUAL:")
-print_cards(test_cards, len(test_cards))
+# print(f"ARRAY - deck before shuffle:\n{test_cards}\n")
+# print("VISUAL:")
+# print_cards(test_cards, len(test_cards))
 
-print("-"*100)
+# print("-"*100)
 
-shuffle_cards(test_cards, len(test_cards))
-print(f"\nARRAY - deck after shuffle:\n{test_cards}\n")
-print("VISUAL:")
-print_cards(test_cards, len(test_cards))
+# shuffle_cards(test_cards, len(test_cards))
+# print(f"\nARRAY - deck after shuffle:\n{test_cards}\n")
+# print("VISUAL:")
+# print_cards(test_cards, len(test_cards))
 
-print("-"*100)
+# print("-"*100)
 
-sort_cards(test_cards, len(test_cards))
-print(f"\nARRAY - deck after re-sorting:\n{test_cards}\n")
-print("VISUAL:")
-print_cards(test_cards, len(test_cards))
+# sort_cards(test_cards, len(test_cards))
+# print(f"\nARRAY - deck after re-sorting:\n{test_cards}\n")
+# print("VISUAL:")
+# print_cards(test_cards, len(test_cards))
+
+newDealer = Dealer("D", "Dealer", [0, 1])
+newPlayer = Player("player", "Player1", [23, 7])
+print(newDealer)
+
+# Debugging and testing stuff, will be removed later
+###########################################################################
